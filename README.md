@@ -1,2 +1,2 @@
-# MaratonaBiblicaKairos
- Projeto de sistama para Maratona Kairos
+# Projeto para maratona
+ Projeto desenvolvido para controle de maratona biblica
