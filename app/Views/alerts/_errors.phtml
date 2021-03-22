@@ -1,0 +1,14 @@
+
+<?php if ($this->errors): ?>
+    <div id="alerta">
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="counter">
+                <span aria-hidden="true">00 &times;</span>
+            </button>
+            
+            <?php foreach ($this->errors as $msg): ?>            
+            <p ><i class="glyphicon glyphicon-alert"></i> <?php echo $msg; ?></p>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endif; ?>

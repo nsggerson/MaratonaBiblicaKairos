@@ -1,0 +1,47 @@
+<!-- Modal -->
+<section>
+    <div class="modal t-modal fade" id="_modalError" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-md" role="document">
+            <form action='/pacientes/internar' method="post" accept-charset="utf-8">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">
+                            
+                        </h4>
+                        <label id="error"></label>
+                    </div>
+
+                    
+                    <div class="modal-body">
+                        <!--Name-->
+                        <div class="row">
+
+                        <?php if ($this->errors): ?>
+                        <div id="alerta">
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close" id="counter">
+                        
+                        </button>
+                        <?php foreach ($this->errors as $msg): ?>            
+                        <p ><i class="glyphicon glyphicon-alert"></i> <?php echo $msg; ?></p>
+                        <?php endforeach; ?>
+                        </div>
+                        </div>
+                        <?php endif; ?>                                                        
+
+                        </div><!-- end row -->
+                    </div><!--end modal-body-->
+                    
+                    <div class="modal-footer" >
+                        <div class="row">            
+                            <div class="col-md-6">
+                                <a href="/adm" type="button"  class="btn btn-default">Fechar</a>
+                                <button type="submit" onclick="return validar()" class="btn btn-primary">Gravar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div><!--Container-->
+            </form><!--end Form-->
+        </div><!-- End modal-dialog-->      
+    </div><!--End modal-->
+</section>

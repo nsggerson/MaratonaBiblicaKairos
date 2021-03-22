@@ -1,0 +1,18 @@
+{
+    "Homem": {
+        "id":1,
+        "descricao":"Homem",
+        "peso": 13.7,
+        "altura": 5,
+        "idade": 6.8,
+        "valor": 66
+    },
+    "Mulher": {
+        "id":2,
+        "descricao":"Mulher",
+        "peso": 9.6,
+        "altura": 1.7,
+        "idade": 4.7,
+        "valor": 655
+    }
+}

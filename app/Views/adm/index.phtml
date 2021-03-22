@@ -1,0 +1,85 @@
+<style>
+  .container a:link {
+    text-decoration: none;
+
+  }
+
+  .container .col-md-9 a {
+    background-color: #8A0886;
+    border-radius: 10px;
+  }
+
+  .container {
+    background-color: brown;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container .col-md-9 img {
+    width: 70px;
+    height: 70px;
+    filter: saturate(5%) invert(100%) drop-shadow(1px -2px 20px #ffffff);
+  }
+
+
+
+  /*SMALL DEVICES - TABLETS DESCKTOP*/
+  @media screen and (min-width: 960px) {
+    .container .row .col-md-9 {
+      margin-left: 12%;
+    }
+
+    .thumbnail {
+      height: 130px;
+      padding: 2%;
+    }
+  }
+
+  .pesquisa {
+
+    padding-top: 2%;
+    padding-bottom: 3%;
+  }
+
+  .cursor {
+    cursor: pointer;
+  }
+</style>
+
+<?php $this->renderView('alerts/_success') ?>
+<?php $this->renderView('alerts/_errors') ?>
+<section>
+  <div class="container">
+    <div class="row">
+      <!--Cadastrar setor-->
+      
+      <div class="col-md-9 text-center col-xs-offset-0 col-md-offset-1">
+
+        <div class="col-md-2 col-xs-6 col-xs-offset-0">
+          <a href="#" class="thumbnail" id="inciar-painel">
+            <img src="/assets/img/ico/baseline_person_add_black_48dp.png" alt="...">
+            <span class="label label-default">Painel</span>
+            <p class="text-center"></p>
+          </a>
+        </div>
+
+        <div class="col-md-2 col-xs-6 col-xs-offset-0">
+          <a href="/controlador" class="thumbnail">
+            <img src="/assets/img/ico/baseline_person_add_black_48dp.png" alt="...">
+            <span class="label label-default">Controlador</span>
+            <p class="text-center"></p>
+          </a>
+        </div>
+
+
+
+
+      </div>
+    </div>
+    <!--col main>-->
+  </div>
+  <!--Row--->
+  </div>
+  <!--Fim container-->
+</section>
+

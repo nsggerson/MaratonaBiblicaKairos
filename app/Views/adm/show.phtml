@@ -1,0 +1,35 @@
+<div class="container">
+    
+    <h1 class="h1"><?php echo $this->getPageTitle() ?></h1>
+    
+
+
+    <form action="/controlador/keyQuestion" method="post" accept-charset="utf-8">
+        
+        <div class="form-group" <?php echo ($this->errors['numperg']) ? 'has-error'  : '' ?>">
+            
+            <label for="numperg" class="control-label">Titulo</label>
+            <input type="number" name="numperg" class="form-control" value="<?php echo(isset
+              ($this->inputs['numperg'])) ? $this->inputs['numperg'] :'' ?>"> 
+                
+                <?php if($this->errors['numperg']):?>
+                    <span class="help-block"><?php echo $this->errors['numperg'] ?></span>
+                <?php endif; ?>
+        </div>
+        
+         <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
+    
+    <br>
+    <div class="form-group">
+            
+            <label for="title">Perguntas</label>
+            <textarea name="content" class="form-control" rows="10">
+                <?php echo $this->view->perguntas->title;?>
+                <?php echo $this->view->perguntas->content;?>  
+                <?php echo $this->view->perguntas->nome;?>         
+            </textarea>              
+            
+    </div>
+
+</div>

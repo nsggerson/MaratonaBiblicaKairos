@@ -1,0 +1,652 @@
+<style>
+    .fd {
+        background-color: blueviolet;
+    }
+
+    .painel-fila button {
+
+        margin: 3px;
+    }
+
+    .painel-fila {
+
+        padding: 1rem;
+    }
+
+    /*Dando efeito de mouse nos icones da tabela de grupos pergunsta setadas*/
+    .gpperg-efect {
+        cursor: pointer;
+        opacity: 1;
+    }
+
+    .gpperg-efect:hover {
+        opacity: 0.5;
+    }
+
+
+    /*Retirando o evendo de mouse sobre do campo grupo seletor*/
+    #grpAtividade {
+        cursor: no-drop;
+    }
+</style>
+<style>
+    #painel-sort-number-enter,
+    #painel-sort-number-exit {
+        border-width: medium;
+        border-style: solid;
+        border-color: #00f;
+        -webkit-box-shadow: 10px 9px 5px #070707;
+        -moz-box-shadow: 10px 9px 5px #070707;
+        box-shadow: 10px 7px 9px #070707;
+
+    }
+
+    #seletor {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+</style>
+
+<?php
+$type = ['hedden', 'text'];
+$setHidden = 'hidden';
+?>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">Operations Panel</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="navb">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a href="#" class="nav-link" id="inciar-painel">Painel</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0)">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="javascript:void(0)">Disabled</a>
+            </li>
+        </ul>
+
+        <!-- Dropdwn para carregamento do grupo questionador função javascript iddf=001 -->
+        <div class="btn-group my-2 my-lg-0 text-center">
+            <button id="load-questionador-btn-load" class="btn btn-md" type="button" style="width: 12rem;">
+                <div class="spinner-border text-muted"></div>
+            </button>
+            <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#" id="load-user-questionador">Loading</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container-fluid fd" id="seletor">
+    <div class="col-md-12">
+        <div class="card text-white bg-dark mb-3" style="max-width: 200rem;">
+            <!--Painel para apresentar nome do gropo quantidade de pontos-->
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="col-md-5 mb-2">
+                            <h5 class="card-title" id="grup-em-operacao-painel">
+                                Loading
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Input hidden-->
+            <!--Valor passado pela function 001-->
+
+            <input type="<?php echo $setHidden ?>" id="operador-input-id" value="0">
+            <input type="<?php echo $setHidden ?>" id="operador-input-name" value="Loading">
+            <input type="<?php echo $setHidden ?>" id="operador-input-pergunta-qtd" value="0">
+            <!--Fim fc001--->
+            <input type="<?php echo $setHidden ?>" id="operador-input-pergunta-id" value="0">
+            <input type="<?php echo $setHidden ?>" id="grupo-input-group-id" value="0">
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8 mb-1">
+                        <div class="btn-group btn-md btn-blok" role="group" aria-label="Basic example">
+                            <button class="btn btn-secondary" id="back"><span class="carousel-control-prev-icon" aria-hidden="true"></span></button>
+                            <input id='backgo-input-group-name' class='btn btn-primary' type='text' value='#' readonly>
+                            <button id="next" class="btn btn-secondary"><span class="carousel-control-next-icon" aria-hidden="true"></span></button>
+                        </div>
+                        <!--Painel para setar valores a fila e ao grupo questionador-->
+                        <div class="btn-group btn-md btn-blok" role="group" aria-label="Basic example">
+                            <!--Utiliza da function 002-->
+                            <button id="fila-gerar-numero-questao" class="btn btn-warning">Raffle&ensp;<span class="badge badge-light" id="badge-quat-perg">0</span></button>
+                            <button id="fila-gerar-numero-setfila" class="btn btn-secondary">Launch&ensp;</button>
+                            <button id="grupo-pontuar-setvalue" class="btn btn-secondary">To-Score</button>
+                        </div>
+
+
+                        <a href="#" class="btn " data-toggle="modal" data-target="#modal-addPunctuation"><i class='far fa-plus-square' style='font-size:24px;color:cornsilk'></i></a>
+                        <a href="#" class="btn " data-toggle="modal" data-target="#modal-punishment-groups"><i class='far fa-minus-square' style='font-size:24px;color:cornsilk'></i></i></a>
+                        <a href="#" class="btn " data-toggle="modal" data-target="#modal-pass-groups"><i class='fas fa-people-carry' style='font-size:24px;color:cornsilk'></i></a>
+                        <a href="#" class="btn " data-toggle="modal" data-target="#modal-control-panel"><i class="fa fa-television" style='font-size:24px;color:cornsilk'></i></a>
+
+                    </div>
+                    <div class="col-md-4 align-self-end" id="painel-sort-number">
+                        <!--
+                            Painel que apresenta os pontos apos ser sorteado e apresenta logo apó lançado a fila
+                            Recebe os parametro através de uma função javascrript idf= 002
+                        -->
+                        <span class="display-4  pr-4 pl-4" id="painel-sort-number-enter">00</span>
+                        <span style="font-size: 70px;" id="painel-sort-number-ico">&#128072;&#127998;</span>
+                        <span class="display-4  pr-4 pl-4" id="painel-sort-number-exit">00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid ">
+    <div class="row ">
+        <!--Painel da fila-->
+        <div class="col-md-2">
+            <div class="card text-white bg-primary " style="max-width: 19rem;">
+                <div class="card-header">Fila</div>
+                <div class="card-body mb-1" id="painel-fila">
+                    loading...
+                </div>
+            </div>
+        </div>
+        <!-- Tabela como nome de grupo e header com titulo-->
+        <div class="col-md-8">
+            <!--  header-->
+            <div class="row">
+                <div class="col-md-4">
+                    <label>Lista de Grupos</label>
+                </div>
+                <div class="col-md-8">
+                    <!-- Utilizado pela function 003-->
+                    <label for="error" class="form-control form-inline">
+                        Informação:&ensp;<div id="mensagem-error-ponto" style="color:brown"></div>
+                    </label>
+                </div>
+            </div>
+            <!--  Tabela-->
+            <table class="table table-dark text-center " id="minhaTabela">
+                <thead>
+                    <tr>
+                        <th>#Nbg</th>
+                        <th>Key</th>
+                        <th>Group's Name</th>
+                        <th>Punctuation</th>
+                        <th>Question code</th>
+                        <th>Progress</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <!-- Tabela com o nome dos grupos-->
+        <div class="col-md-2">
+            <div class="card text-white bg-primary mb-3" style="max-width: 19rem;">
+                <div class="card-header">Cabeçalho</div>
+                <div class="card-body">
+                    <h5 class="card-title">Título de Card Primary</h5>
+                    <p class="card-text">Um exemplo de texto rápido para construir o título do card e fazer preencher o conteúdo do card.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal operador-input-id-->
+<?php require_once __DIR__ . "/../assets/modal.phtml" ?>
+
+
+
+
+<script>
+    //Sorteia o valor da questão 
+    document.getElementById('fila-gerar-numero-questao').addEventListener('click', function() {
+        if ($('#painel-sort-number-enter').html() != '00' || $('#painel-sort-number-exit').text() != '00') {
+            $('#mensagem-error-ponto').text("*Já existe um valor de pergunta!");
+            return;
+        }
+        if ($('#operador-input-pergunta-qtd').val() == 0) {
+            $('#mensagem-error-ponto').text("*O questionador não possui mais perguntas!");
+            return;
+        }
+
+        var ajax = new XMLHttpRequest();
+        let $url = "/fila/find?qtd=" + $('#operador-input-pergunta-qtd').val() + "&id=" + $('#operador-input-id').val();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                $result = parseInt(ajax.response);
+                if ($result <= 9) {
+                    $result = 0 + '' + $result;
+                }
+                $('#painel-sort-number-enter').html($result);
+            }
+            return null;
+        }
+        ajax.open("GET", $url, true);
+        ajax.send();
+    });
+
+    //Manda o valor para a fila
+    document.getElementById('fila-gerar-numero-setfila').addEventListener('click', function() {
+        if ($('#painel-sort-number-enter').html() == '00') {
+            $('#mensagem-error-ponto').text("*Você precisa gerar um valor para pergunta!");
+            return;
+        }
+        let $id = $('#painel-sort-number-enter').html();
+        $('#operador-input-pergunta-id').val(parseInt($id));
+        var ajax = new XMLHttpRequest();
+        let $url = "/fila/store?id=" + parseInt($id) + '&idGroups=' + $('#grupo-input-group-id').val()+'&nmGroups='+$('#backgo-input-group-name').val() + '&idPergs=' + $('#operador-input-pergunta-id').val();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                $result = parseInt(ajax.response);
+                if ($result <= 9) {
+                    $result = 0 + '' + $result;
+                }
+                //reset
+                $('#painel-sort-number-enter').html('00');
+                loadQueuePanel();
+                //$('#painel-sort-number-exit').text(''&#128073;&#127998;'');
+                $('#painel-sort-number-ico').html('&#128073;&#127998;');
+                $('#painel-sort-number-exit').text($id);
+                return painelComand('/painel/store?df=8,6,7');
+            }          
+        }
+        ajax.open("GET", $url, true);
+        ajax.send();
+    });
+
+    //function 004 Carregar o texto da pergunta
+    document.getElementById('modal-edit-fila-loadPerguntaText').addEventListener('click', function() {
+        let $a = $('#recipient-name').val();
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                let $result = JSON.parse(ajax.response);
+                $('#message-text').val($result[0].text);
+                $('#recipient-type').val($result[0].type);
+                $('#recipient-score').val($result[0].value);
+                return;
+            }
+        }
+        ajax.open("GET", '/pergunta/show?id=' + $a, true);
+        ajax.send();
+    });
+
+    //Function 005 Excluir chamada do painel-fila
+    document.getElementById('modal-edit-fila-excluir').addEventListener('click', function() {
+        let ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                loadQueuePanel();
+                return;
+            }
+        }
+        ajax.open("GET", '/fila/delete?id=' + $('#recipient-name').val(), true);
+        ajax.send();
+        return;
+    });
+
+    // Volta para o grupo anterior 
+    document.getElementById('back').addEventListener('click', function() {
+        if ($('#painel-sort-number-exit').text() != '00') {
+            $('#mensagem-error-ponto').text("*Não é permitido a troca de grupos sem passar ou pontuar!");
+            return;
+        }
+        $('#mensagem-error-ponto').text("");
+        nextBack('back')
+        return;
+    });
+
+    // Avança para o proximo grupo
+    document.getElementById('next').addEventListener('click', function() {
+        if ($('#painel-sort-number-exit').text() != '00') {
+            $('#mensagem-error-ponto').text("*Não é permitido a troca de grupos sem passar ou pontuar!");
+            return;
+        }
+        $('#mensagem-error-ponto').text("");
+        nextBack('next')
+        return;
+    });
+
+    // Passa a pergunta para o próximo grupo
+    document.getElementById('pass').addEventListener('click', function() {
+        if ($('#painel-sort-number-exit').text() == '00') {
+            $('#mensagem-error-ponto').text("*Não foi gerado um numero de pergunta!");
+            return;
+        }
+        $('#mensagem-error-ponto').text("");
+        nextBack('pass');
+        return;
+    });
+
+    //Pontua os grupos 
+    document.getElementById('grupo-pontuar-setvalue').addEventListener('click', function() {
+        let $idGroups = $('#grupo-input-group-id').val();
+        let $idPergs = $('#painel-sort-number-exit').text();
+        if ($idPergs == '00') {
+            $('#mensagem-error-ponto').text("*Você precisa gerar um valor para pergunta!");
+            return;
+        }
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                //console.log(ajax.response);
+                loadQuestioner();
+                loadStatusGroups();
+                
+            }
+        }
+        ajax.open("GET", '/pontos/store?idGroups=' + $idGroups + '&idPergs=' + $idPergs, true);
+        ajax.send();
+        $('#painel-sort-number-exit').text('00');
+        $('#mensagem-error-ponto').text("");
+        $('#operador-input-pergunta-id').val(0);
+        return painelComand('/painel/store?df=1,3');
+        return;
+    });
+
+    //Limpa o inputs modal
+    document.getElementById('modal-groups-clean').addEventListener('click', function() {
+        $('#modal-groups-input-score').val('')
+        $('#modal-groups-input-type').val('')
+        $('#modal-groups-input-content').text('')
+        return;
+    });
+
+    // Carrega as questões no modal-groups
+    document.getElementById('modal-groups-charge').addEventListener('click', function() {
+        //
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                let $result = JSON.parse(ajax.response);
+                console.log($result);
+                for (let index = 0; index < $result.length; index++) {
+                    const element = $result[index];
+                    $('#modal-groups-input-score').val(element.value)
+                    $('#modal-groups-input-type').val(element.type)
+                    $('#modal-groups-input-content').text(element.text)
+                }
+            }
+        }
+        ajax.open("GET", '/pergunta/show?id=' + $('#modal-groups-input-id').val(), true);
+        ajax.send();
+        return;
+    });
+
+    // Exclui a pergunta do grupo
+    document.getElementById('modal-groups-delete').addEventListener('click', function() {
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                let $result = JSON.parse(ajax.response);
+                console.log($result);
+                loadQuestioner();
+                loadStatusGroups();
+            }
+        }
+        ajax.open("GET", '/ponto/delete?tp=find&id=' + $('#modal-groups-input-id').val(), true);
+        ajax.send();
+        return;
+    });
+
+    // Da a punição para um grupo    
+    document.getElementById('modal-punishment-run').addEventListener('click', function() {
+        let ajax = new XMLHttpRequest();
+        let idPerg = $('#modal-punishment-groups-input-id').val();
+        let $value = $('#modal-punishment-groups-input-value').val();
+        let content = $('#modal-punishment-groups-text-content').val();
+
+        if (idPerg.length < 1 || content.length < 1 || $value.length < 1) {
+            $('#mensagem-error-ponto').text("*A função não pode conter campo null!");
+        }
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                loadStatusGroups();
+                //console.log(ajax.response);
+                return;
+            }
+        }
+        ajax.open("GET", '/retPontos/store?id=' + idPerg +
+            '&content=' + content +
+            '&value=' + $value, true);
+        ajax.send();
+        return;
+    });
+
+    // Da ponto extra para o grupo    
+    document.getElementById('modal-addPunctuation-run').addEventListener('click', function() {
+
+        let ajax = new XMLHttpRequest();
+        let idPerg = $('#modal-addPunctuation-input-id').val();
+        let $value = $('#mmodal-addPunctuation-input-value').val();
+        let content = $('#modal-addPunctuation-text-content').val();
+
+        if (idPerg.length < 1 || content.length < 1 || $value.length < 1) {
+            $('#mensagem-error-ponto').text("*A função não pode conter campo null!");
+        }
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                loadStatusGroups();
+                console.log(ajax.response);
+                return;
+            }
+        }
+        ajax.open("GET", '/addPontos/store?id=' + idPerg +
+            '&content=' + content +
+            '&value=' + $value, true);
+        ajax.send();
+        return;
+    });
+
+    // Inicia o cronometro no painel
+    document.getElementById('modal-control-panel-play').addEventListener('click', function(src) {
+        //cronômetro em pausa
+        $('#status-painel-modal').text('Cronômetro  iniciado');
+        return painelComand('/painel/store?df=2');
+    });
+
+    // Pause o cronometro no painel
+    document.getElementById('modal-control-panel-pause').addEventListener('click', function(src) {  
+        $('#status-painel-modal').text('Cronômetro em pausa');    
+        return painelComand('/painel/store?df=5');
+    });
+
+    // Pause o cronometro no painel
+    document.getElementById('modal-control-panel-stop').addEventListener('click', function(src) { 
+        $('#status-painel-modal').text('Cronômetro reiniciado');     
+        return painelComand('/painel/store?df=3');
+    });
+    //Ação executadas no click input select de operadores
+    function loadQuestionerValueForSelect(src) {
+        let $array = src.split('&');
+        $('#operador-input-id').val($array[0]);
+        $('#operador-input-name').val($array[1]);
+        $('.spinner-border').html($array[1]);
+        loadingStatus($array[0]);
+    }
+
+    // Executa os comandos para o painel
+    function painelComand(src) {
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                return true;
+            }
+            return false;
+        }
+        ajax.open('GET', src, true);
+        ajax.send();
+
+    }
+
+    /**
+     * carrega osvalores dos campos questionador
+     */
+    function loadQuestioner() {
+        $html = '';
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                let $result = JSON.parse(ajax.response);
+                for (let index = 0; index < $result.length; index++) {
+                    const element = $result[index];
+                    // Pula a primeira posição
+                    $html += "<a class='dropdown-item' href=\"javascript:loadQuestionerValueForSelect('" + element.id + '&' + element.name + "')\" id='load-user-questionador'>" + element.name + "</a>";
+                    //Carregando os inputs                    
+                }
+                if ($('.spinner-border').text().length == 0) {
+                    $('.spinner-border').html($result[0].name);
+                    $('#operador-input-id').val($result[0].id);
+                    $('#operador-input-name').val($result[0].name);
+
+                }
+                $('.dropdown-menu').html("<div class='dropdown-divider'></div>" + $html);
+                loadingStatus($result[0].id);
+                return;
+            }
+        }
+        ajax.open('GET', '/questionador', true);
+        ajax.send();
+    }
+
+    /**@abstract
+     * Carrega o status de perguntas do questionador 
+     */
+    function loadingStatus(src) {
+        let $html = '';
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                let $result = JSON.parse(ajax.response);
+                //console.log($result);
+                let $html = "Grupo questionador: " + $('#operador-input-name').val() + '<br>Quant Pergunta: ' + $result[0].qtd + '';
+                $('#grup-em-operacao-painel').html($html);
+                $('#operador-input-pergunta-qtd').val($result[0].qtd);
+                return;
+            }
+        }
+        ajax.open("GET", '/questionador/show?id=' + src, true);
+        ajax.send();
+    }
+
+    /**Carrega o painel da fila */
+    function loadQueuePanel() {
+        var ajax = new XMLHttpRequest();
+        $text = '';
+        $paramRoutes = "/fila/index";
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                let $result = JSON.parse(ajax.response);
+                for (let element in $result) {
+                    if (parseInt($result[element].fkpergunta) <= 9) {
+                        $text += "<button type='button' class='btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-edit-fila' \
+                        data-whatever='" + $result[element].fkpergunta + "'\
+                        >0" + $result[element].fkpergunta + "</button>";
+                    } else {
+                        $text += "<button type='button' class='btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-edit-fila' data-whatever='" + $result[element].fkpergunta + "'>" + $result[element].fkpergunta + "</button>";
+                    }
+                }
+                $('#painel-fila').html($text);
+                $text = '';
+                return;
+            }
+        }
+        ajax.open("GET", $paramRoutes, true);
+        ajax.send();
+    }
+
+    //Painel de status grupos
+    function loadStatusGroups() {
+        let ajax = new XMLHttpRequest();
+        let result = '';
+        let itens = '';
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                $result = JSON.parse(ajax.response);
+
+                for (let i = 0; i < $result.length; i++) {
+                    const element = $result[i];
+                    if (i == 0 && $('#backgo-input-group-name').val() == '#') {
+                        $('#backgo-input-group-name').val(element.name);
+                        $('#grupo-input-group-id').val(element.id);
+                    }
+                    itens += "<tr>";
+                    itens += "<td># " + (i + 1) + "</td>";
+                    itens += "<td>" + element.id + "</td>";
+                    itens += "<td>" + element.name + "</td>";
+                    itens += "<td>" + element.pontos + "</td>";
+                    let elementAcerto = '';
+                    let $html = '';
+
+                    if (element.acertos != 0) {
+                        let elementAcerto = '';
+                        let $html = '';
+                        for (let index = 0; index < element.acertos.length; index++) {
+                            elementAcerto = element.acertos[index];
+                            $html += "<label  class='gpperg-efect' \
+                            'style='font-size:13px; margin: -2px'\
+                            data-toggle='modal' data-target='#modal-edit-perggroup' data-whatever='" + elementAcerto + "'\
+                            style='font-size:11px'>&#x2705;</label>";
+                        }
+                        itens += "<td>" + $html + "</td>";
+                    } else {
+                        itens += "<td>" + element.acertos + "</td>";
+                    }
+                    itens +=
+                        "<td>" +
+                        "<div class='progress'>" +
+                        "<div class='progress-bar' role='progressbar' style='width:" + element.pontos +
+                        "%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>" +
+                        "</div>" +
+                        "</div>" +
+                        "</td>";
+                    itens += "</tr>"
+                }
+                $('#minhaTabela tbody').html(itens);
+                itens = '';
+                return;
+            }
+        }
+        ajax.open('GET', '/grupo', true);
+        ajax.send();
+    }
+
+    //Função next e back
+    function nextBack(src) {
+        let ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                $result = JSON.parse(ajax.response);
+                //console.log($result);
+                $('#backgo-input-group-name').val($result.nmGroups);
+                $('#grupo-input-group-id').val($result.idGroups);
+                return;
+            }
+        }
+        ajax.open('GET', '/grupo/show?df=' + src + '&id=' + $('#grupo-input-group-id').val(), true);
+        ajax.send();
+    }
+
+    window.onload = function() {
+        loadQuestioner();
+        loadQueuePanel();
+        loadStatusGroups();
+    }
+</script>

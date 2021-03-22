@@ -1,0 +1,20 @@
+{
+    "name": "nsg/microframework",
+    "description": "Sistema de Maratona Kairos",
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        { "name": "Gerson Alves", "email": "nsggerson@gmail.com" },
+        { "name": "Bruno", "email": "bruno@gmail.com" }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Core\\": "core/"
+        }
+    },
+    "require": {
+        "php": ">=5.6.4",
+        "illuminate/database": "^5.4"
+    }
+}

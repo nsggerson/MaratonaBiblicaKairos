@@ -1,0 +1,103 @@
+{
+	"6&18": [
+		{
+			"id":1,
+			"descricao":"HomemBranco",
+			"aj": 2.22,
+			"idd": "&lowast;",
+            "valor": 40.54
+			
+		},
+		{
+			"id":2,
+			"descricao":"HomemNegro",
+			"aj": 2.18,
+			"idd": "&lowast;",
+			"valor": 39.60
+			
+		},
+		{
+			"id":3,
+			"descricao":"MulherBranca",
+			"aj": 2.14,
+			"idd": "&lowast;",
+            "valor": 43.21
+			
+		},
+		{
+			"id":4,
+			"descricao":"MulherNegra",
+			"aj": 2.02,
+			"idd": "&lowast;",
+            "valor": 46.59
+			
+		}
+	],
+
+	"19&60": [
+		{
+			"id":1,
+			"descricao":"HomemBranco",
+			"aj": 1.88,
+			"idd": "&lowast;",
+            "valor": 71.85
+			
+		},
+		{
+			"id":2,
+			"descricao":"HomemNegro",
+			"aj": 1.79,
+			"idd": "&lowast;",
+            "valor": 73.42
+			
+		},
+		{
+			"id":3,
+			"descricao":"MulherBranca",
+			"aj": 1.88,
+            "idd": 0.06,
+            "valor": 71.85
+			
+		},
+		{
+			"id":4,
+			"descricao":"MulherNegra",
+			"aj": 1.86,
+            "idd": 0.06,
+            "valor": 68.10
+			
+		}
+	],
+	"&60": [
+		{
+			"id":1,
+			"descricao":"HomemBranco",
+			"aj": 2.08,
+			"idd": "&lowast;",
+            "valor": 59.01
+		},
+		{
+			"id":2,
+			"descricao":"HomemNegro",
+			"aj": 1.37,
+			"idd": "&lowast;",
+            "valor": 95.79
+			
+		},
+		{
+			"id":3,
+			"descricao":"MulherBranca",
+			"aj": 1.91,
+            "idd": 0.17,
+            "valor": 75.00
+			
+		},
+		{
+			"id":4,
+			"descricao":"MulherNegra",
+			"aj": 1.96,
+			"idd": "&lowast;",			
+            "valor": 58.72
+		}
+	]
+}

@@ -1,0 +1,156 @@
+{
+    "habitual": {
+        "frEstressInjuria": {
+            "type": "options"
+        },
+
+        "aj": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+
+        },
+
+        "cb": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+
+        "ps": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+
+        "at": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+
+        "cp": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+
+        "pct": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+
+        "cpant": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+
+        "diagnostico": {
+            "type": "string",
+            "sizeMin": "2",
+            "sizeMax": "20"
+        }
+
+    },
+    "estimado": {
+
+        "frEstressInjuria": {
+            "type": "options"
+        },
+
+        "aj": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+
+        },
+        "cb": {
+            "type": "int",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+
+        "cp": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+
+        "pct": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+
+        "cpant": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+
+        "psh": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+
+        "diagnostico": {
+            "type": "string",
+            "sizeMin": "2",
+            "sizeMax": "20"
+        }
+
+
+    },
+    "referido": {
+
+        "frEstressInjuria": {
+            "type": "options"
+        },
+    
+        "aj": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+    
+        },
+        
+        "cb": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+        
+        "cp": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+        "pct": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+        "cpant": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+    
+        "psh": {
+            "type": "float",
+            "sizeMin": "2",
+            "sizeMax": "5"
+        },
+        
+        "diagnostico": {
+            "type": "string",
+            "sizeMin": "2",
+            "sizeMax": "20"
+        }
+    
+    }
+
+}

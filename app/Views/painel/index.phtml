@@ -1,0 +1,323 @@
+<style>
+    .painel {
+        background-color: #333;
+        font-family: sans-serif;
+    }
+
+
+
+    /*
+    .section-2,
+    .section-4 {
+        background-color: crimson;
+    }
+
+    .section-3 {
+        background-color: darkcyan;
+    }
+
+    /*.section-4 {
+        background-color: darkgrey;
+    }*/
+    /*
+    .cmp-punctuation-groups {
+        background-color: crimson;
+    }*/
+</style>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Painel de exibição perguntas maratona</title>
+</head>
+
+<body class="painel">
+    <div class="container-fluid" style="color: gainsboro;">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-4 text-center p-4 my-3" style="background-color: goldenrod;">
+                <h2 class="display-5" id="groups-marathon">Uma de duas colunas</h2>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="section-2 col-lg-2 mr-auto">
+                ...loading
+            </div>
+
+            <div class="section-3 col-lg-8 mw-100 text-center">
+                <div class="col-lg-12">
+                    <label for="">
+                        <h1 id="title-pergs" class="display-4" style="color: seashell;">...load</h1>
+                    </label>
+                </div>
+                <div class="col-lg-12 my-2" style="background-color:royalblue">
+                    <label for="">
+                        <h1 id="body-pergs" class="display-4" style="color: seashell;">...load</h1>
+                    </label>
+                </div>
+                <div class="col-lg-12" style="background-color:royalblue">
+                    <label for="">
+                        <h1 id="body-pergs-point" class="display-4" style="color: seashell;">...load</h1>
+                    </label>
+                </div>
+            </div>
+
+            <div class="section-4 col-lg-2 mr-auto">
+                ...loading
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="container-cronometro">
+    <div class='row '>
+            <div class='col-lg-4 mx-auto'>
+                <div class='evolucao text-center' style='color: seashell;' id='barra-evolucao-percent'>00% </div>
+                <div class='progress'>
+                    <div class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: 00%'></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript (Opcional) -->
+    <!-- jQuery primeiro, depois Popper.js, depois Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+
+</html>
+<script>
+    var $limit = false;
+    function main() {
+        setTimeout('main()', 998);
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                let $result = JSON.parse(ajax.response).event;
+                for (let index = 0; index < $result.length; index++) {
+                    const element = $result[index];
+                    let $a = parseInt($('#barra-evolucao-temp').html());
+                    let $b = null;
+                    let $c = null;
+                    let $d = null;
+                    let $e = null;
+                    if (element == 'load-groups') {
+                        loadgrops();
+                    } else if (element == 'start-scoreboard' || element == 'stop-scoreboard' || element == 'load-scoreboard') {
+                                           
+                        $exp = element.split('-');                        
+                        $d = load50($exp[0]);                        
+                        if ($d == 'end') {
+                            setParam('/painel/store?df=4')
+                        }
+                    } else if (element == 'start-question') {
+                        question();
+                    } else if (element == 'start-operando') {
+                        operando();
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+        ajax.open('GET', '/painel/show', true);
+        ajax.send();
+    }
+
+    function setParam(src) {
+
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                return true;
+            }
+            return false;
+        }
+        ajax.open('GET', src, true);
+        ajax.send();
+    }
+
+    function load50(src) {
+       
+        let $array = [];
+        let $c;
+        let $html = '';
+        let $a = $('#barra-evolucao-percent').text().split('%');
+        $b = parseInt($a[0]);
+        $b += 1;
+
+        if (src == 'start') {
+            $limit = true;
+            if ($b <= 10) {
+                $c = "progress-bar-striped  bg-info";
+            }
+            if ($b >= 11 && $b <= 24) {
+                $c = "progress-bar-striped progress-bar-animated";
+            }
+            if ($b >= 25 && $b <= 49) {
+                $c = "progress-bar-striped  bg-success";
+            }
+            if ($b >= 50 && $b <= 79) {
+                $c = "progress-bar-striped  bg-warning";
+            }
+            if ($b >= 80 && $b < 100) {
+                $c = "progress-bar-striped  bg-danger";
+            }
+
+            if ($b == 101) {
+                $limit = false;
+                $html = "<div class='progress-bar  role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: 0%'></div>";
+                $('.progress').html($html);
+                $('#barra-evolucao-percent').text('00%');
+                return 'end';
+            }
+        }
+        if (src == 'pause') {
+            $d = $('#barra-evolucao-percent').text().split('%');
+            $e = parseInt($d[0]);
+            $html = "<div class='progress-bar  role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: " + $e + "%'></div>";
+            $('.progress').html($html);
+            return src;
+        }
+        if (src == 'stop') {
+            $limit = false;
+            $('#barra-evolucao-percent').text('00%');
+            $html = "<div class='progress-bar " + $c + "'  role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: 0%'></div>";
+            $('.progress').html($html);
+            return src;
+        }
+        if (src == 'load') {
+            $limit = false;
+            $('#barra-evolucao-percent').text('00%');
+            $html = "<div class='progress-bar " + $c + "'  role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: 0%'></div>";
+            $('.progress').html($html);
+            return setParam('/painel/store?df=2');
+        }
+        $html = "<div class='progress-bar " + $c + "' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: " + $b + "%'></div>";
+        $('.progress').html($html);
+
+        if ($b < 10) {
+            $('#barra-evolucao-percent').text('0' + $b + '%');
+            return false;
+        } else {
+            $('#barra-evolucao-percent').text($b + '%');
+            return false;
+        }
+
+    }
+
+
+    //Carrega o arquivo json 
+    function question() {
+        //let $url = '/painel/loadScreen';
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                let $result = JSON.parse(ajax.response);
+                $('#title-pergs').text($result.type);
+                $('#body-pergs').text($result.text);
+                $('#body-pergs-point').text($result.value);
+                setParam('/painel/store?df=0')
+                return true;
+            }
+            return false;
+        }
+        ajax.open('GET', '/pergunta/question', true);
+        ajax.send();
+    }
+
+    //Carrega o arquivo json 
+    function operando() {
+        //let $url = '/painel/loadScreen';
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                let $result = JSON.parse(ajax.response);
+                $('#groups-marathon').text($result.nmGroups);
+                /*
+                if(document.getElementById('#section-1').innerHTML != $result.nmGroups){
+                    $('#barra-evolucao-percent').text('00%');
+                }*/
+                return true;
+            }
+            return false;
+        }
+        ajax.open('GET', '/painel/operando', true);
+        ajax.send();
+    }
+
+    //Carrega os grupos na tela
+    function loadgrops() {
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                let $right = '';
+                let $left = '';
+                let $dir = 1;
+                let array = JSON.parse(ajax.response);
+                for (let index = 0; index < array.length; index++) {
+                    const element = array[index];
+                    if ($dir % 2 != 0) {
+                        $left += htmlGroups(element.name, element.pontos);
+                        $('.section-2').html($left);
+                    } else {
+                        $right += htmlGroups(element.name, element.pontos);
+                        $('.section-4').html($right);
+                    }
+                    $dir++;
+                }
+                setParam('/painel/store?df=0')
+                return true;
+            }
+            return false;
+        }
+        ajax.open('GET', '/painel/groups', true);
+        ajax.send();
+    }
+
+    // Gera o HTML dos grupos
+    function htmlGroups(name, ponto) {
+
+        return "<div class='card text-white bg-info mt-3 mb-3' style='max-width: 20rem;'>\
+        <div class='card-header'>" + name + "</div>\
+        <div class='card-body'>\
+        Pontos: " + ponto + "\
+        </div>\
+        </div>";
+    }
+
+    // 
+    function htmlCronometro() {
+        let $html = "<div class='row '>\
+            <div class='col-lg-4 mx-auto'>\
+                <div class='evolucao text-center' style='color: seashell;' id='barra-evolucao-percent'>00% </div>\
+                <div class='progress'>\
+                    <div class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100' style='width: 00%'></div>\
+                </div>\
+            </div>\
+        </div>";
+        document.getElementById('container-cronometro').html($html);
+    }
+
+    //Set a primeira função da tela
+    setTimeout('main()', 3000);
+
+    function loadMain() {
+        loadgrops();
+        temp();
+    }
+</script>

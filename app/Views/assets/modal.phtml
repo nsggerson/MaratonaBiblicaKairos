@@ -1,0 +1,211 @@
+<!--Modal-->
+<!--Modal panel add e del value-->
+<div class="modal fade" id="modal-edit-fila" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nova mensagem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="recipient-name" class="col-form-label">Question:</label>
+                            <input type="text" class="form-control" id="recipient-name" readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="recipient-name" class="col-form-label">Score:</label>
+                            <input type="text" class="form-control " id="recipient-score" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Type:</label>
+                            <input type="text" class="form-control " id="recipient-type" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Text:</label>
+                        <textarea class="form-control" id="message-text" readonly></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" id="modal-edit-fila-backPainel">Panel</button>
+                <button type="button" class="btn btn-success" id="modal-edit-fila-loadPerguntaText">Charge</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="modal-edit-fila-excluir">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Confiurando a pergunta-->
+<div class="modal fade" id="modal-edit-perggroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nova mensagem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="recipient-name" class="col-form-label">KEY:</label>
+                            <input type="text" class="form-control" id="modal-groups-input-id" readonly>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="recipient-name" class="col-form-label">Score:</label>
+                            <input type="text" class="form-control " id="modal-groups-input-score" readonly>
+                        </div>
+                        <div class="col">
+                            <label for="recipient-name" class="col-form-label">Type:</label>
+                            <input type="text" class="form-control " id="modal-groups-input-type" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Content:</label>
+                        <textarea class="form-control" id="modal-groups-input-content" readonly></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="modal-groups-clean">Close</button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="javascript:editPerggroup('painel')" disabled>Panel</button>
+                <button type="button" class="btn btn-success" id="modal-groups-charge">Charge</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="modal-groups-delete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal para punição-->
+<div class="modal fade" id="modal-punishment-groups" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nova mensagem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="recipient-name" class="col-form-label">KEY:</label>
+                            <input type="text" class="form-control" id="modal-punishment-groups-input-id" value="0">
+                        </div>
+                        <div class="col-md-9">
+                            <label for="recipient-name" class="col-form-label">Value:</label>
+                            <input type="text" class="form-control " id="modal-punishment-groups-input-value">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Justification:</label>
+                        <textarea class="form-control" id="modal-punishment-groups-text-content"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="modal-punishment-run">Run</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal para ponto extra-->
+<div class="modal fade" id="modal-addPunctuation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nova mensagem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="recipient-name" class="col-form-label">KEY:</label>
+                            <input type="text" class="form-control" id="modal-addPunctuation-input-id" value="0">
+                        </div>
+                        <div class="col-md-9">
+                            <label for="recipient-name" class="col-form-label">Value:</label>
+                            <input type="text" class="form-control " id="mmodal-addPunctuation-input-value">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Justification:</label>
+                        <textarea class="form-control" id="modal-addPunctuation-text-content"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" id="modal-addPunctuation-run">Run</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Passa para o póximo grupo-->
+<div class="modal" tabindex="-1" role="dialog" id="modal-pass-groups">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Passar a pergunta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Deseja passar para o próximo grupo.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" id='pass' class="btn btn-success" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Controle do painel-->
+<div class="modal" tabindex="-1" role="dialog" id="modal-control-panel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Passar a pergunta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Status Panel:</label>
+                <p id="status-painel-modal">Painel foi iniciado.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id='modal-control-panel-pause' class="btn btn-success"><i class='fas fa-pause' style='font-size:20px'></i></button>
+                <button type="button" id='modal-control-panel-stop' class="btn btn-success"><i class='fas fa-stop' style='font-size:20px'></i></i></button>
+                <button type="button" id='modal-control-panel-play' class="btn btn-success"><i class='fas fa-play' style='font-size:20px'></i></button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class='fas fa-clone' style='font-size:20px'></i></button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+      
+</script>
