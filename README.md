@@ -1,2 +1,2 @@
 # MaratonaBiblicaKairos
- Projeto de sistama para Maratona Kairos
+ Projeto de sistema para Maratona Kairos
