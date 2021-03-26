@@ -47,6 +47,8 @@ $route[] = ['/retPontos/store','PunishmentController@store'];
 
 $route[] = ['/addPontos/store','AddPunctuationController@store'];
 
+$route[] = ['/resposta/show','RespostaController@show'];
+
 
 
 

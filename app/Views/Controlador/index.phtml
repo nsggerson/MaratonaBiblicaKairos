@@ -66,11 +66,13 @@ $setHidden = 'hidden';
                 <a href="#" class="nav-link" id="inciar-painel">Painel</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="javascript:void(0)">Link</a>
+                <a class="nav-link" href="/adm">Admin</a>
             </li>
+            <!--
             <li class="nav-item">
                 <a class="nav-link disabled" href="javascript:void(0)">Disabled</a>
             </li>
+            -->
         </ul>
 
         <!-- Dropdwn para carregamento do grupo questionador função javascript iddf=001 -->
@@ -250,8 +252,11 @@ $setHidden = 'hidden';
         }
         let $id = $('#painel-sort-number-enter').html();
         $('#operador-input-pergunta-id').val(parseInt($id));
+        // Carrega as resposta para as perguntas
+        loadAnswers(parseInt($id));
+
         var ajax = new XMLHttpRequest();
-        let $url = "/fila/store?id=" + parseInt($id) + '&idGroups=' + $('#grupo-input-group-id').val()+'&nmGroups='+$('#backgo-input-group-name').val() + '&idPergs=' + $('#operador-input-pergunta-id').val();
+        let $url = "/fila/store?id=" + parseInt($id) + '&idGroups=' + $('#grupo-input-group-id').val() + '&nmGroups=' + $('#backgo-input-group-name').val() + '&idPergs=' + $('#operador-input-pergunta-id').val();
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4 && ajax.status == 200) {
                 $result = parseInt(ajax.response);
@@ -265,11 +270,35 @@ $setHidden = 'hidden';
                 $('#painel-sort-number-ico').html('&#128073;&#127998;');
                 $('#painel-sort-number-exit').text($id);
                 return painelComand('/painel/store?df=8,6,7');
-            }          
+            }
         }
         ajax.open("GET", $url, true);
         ajax.send();
     });
+
+    /**
+     * Function para buscar a resposta das perguntas
+     * 
+     */
+    function loadAnswers(str){
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                $result = parseInt(ajax.response);
+                if ($result <= 9) {
+                    $result = 0 + '' + $result;
+                }
+                //reset
+                $('#painel-sort-number-enter').html('00');
+                loadQueuePanel();
+                //$('#painel-sort-number-exit').text(''&#128073;&#127998;'');
+                $('#painel-sort-number-ico').html('&#128073;&#127998;');
+                $('#painel-sort-number-exit').text($id);
+                return painelComand('/painel/store?df=8,6,7');
+            }
+        }
+        ajax.open("GET", $url, true);
+        ajax.send();
+    }
 
     //function 004 Carregar o texto da pergunta
     document.getElementById('modal-edit-fila-loadPerguntaText').addEventListener('click', function() {
@@ -349,7 +378,7 @@ $setHidden = 'hidden';
                 //console.log(ajax.response);
                 loadQuestioner();
                 loadStatusGroups();
-                
+
             }
         }
         ajax.open("GET", '/pontos/store?idGroups=' + $idGroups + '&idPergs=' + $idPergs, true);
@@ -463,14 +492,14 @@ $setHidden = 'hidden';
     });
 
     // Pause o cronometro no painel
-    document.getElementById('modal-control-panel-pause').addEventListener('click', function(src) {  
-        $('#status-painel-modal').text('Cronômetro em pausa');    
+    document.getElementById('modal-control-panel-pause').addEventListener('click', function(src) {
+        $('#status-painel-modal').text('Cronômetro em pausa');
         return painelComand('/painel/store?df=5');
     });
 
     // Pause o cronometro no painel
-    document.getElementById('modal-control-panel-stop').addEventListener('click', function(src) { 
-        $('#status-painel-modal').text('Cronômetro reiniciado');     
+    document.getElementById('modal-control-panel-stop').addEventListener('click', function(src) {
+        $('#status-painel-modal').text('Cronômetro reiniciado');
         return painelComand('/painel/store?df=3');
     });
     //Ação executadas no click input select de operadores
