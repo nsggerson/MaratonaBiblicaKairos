@@ -22,6 +22,6 @@ class RespostaController extends BaseController
     }
 
     public function show($request){
-        var_dump($this->global->All());
+        var_dump($this->global->proceduremodel("SELECT * FROM tbl_002_answer"));
     }
 }
