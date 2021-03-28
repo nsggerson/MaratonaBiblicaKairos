@@ -199,11 +199,10 @@ $setHidden = 'hidden';
         </div>
         <!-- Tabela com o nome dos grupos-->
         <div class="col-md-2">
-            <div class="card text-white bg-primary mb-3" style="max-width: 19rem;">
-                <div class="card-header">Cabeçalho</div>
-                <div class="card-body">
-                    <h5 class="card-title">Título de Card Primary</h5>
-                    <p class="card-text">Um exemplo de texto rápido para construir o título do card e fazer preencher o conteúdo do card.</p>
+            <div class="card text-white bg-primary mb-3" style="max-width: 19rem;">                
+                <div class="card-header">Resposta</div>
+                <div class="card-body mb-1" id="painel-resposta">
+                    loading...
                 </div>
             </div>
         </div>
@@ -217,6 +216,11 @@ $setHidden = 'hidden';
 
 
 <script>
+
+    //Carrega a pergunta do painel para a modal
+    document.getElementById('modal-edit-fila-backPainel').addEventListener('click', function(){
+        alert('Fui Clicado')
+    });
     //Sorteia o valor da questão 
     document.getElementById('fila-gerar-numero-questao').addEventListener('click', function() {
         if ($('#painel-sort-number-enter').html() != '00' || $('#painel-sort-number-exit').text() != '00') {
@@ -252,9 +256,6 @@ $setHidden = 'hidden';
         }
         let $id = $('#painel-sort-number-enter').html();
         $('#operador-input-pergunta-id').val(parseInt($id));
-        // Carrega as resposta para as perguntas
-        loadAnswers(parseInt($id));
-
         var ajax = new XMLHttpRequest();
         let $url = "/fila/store?id=" + parseInt($id) + '&idGroups=' + $('#grupo-input-group-id').val() + '&nmGroups=' + $('#backgo-input-group-name').val() + '&idPergs=' + $('#operador-input-pergunta-id').val();
         ajax.onreadystatechange = function() {
@@ -276,30 +277,7 @@ $setHidden = 'hidden';
         ajax.send();
     });
 
-    /**
-     * Function para buscar a resposta das perguntas
-     * 
-     */
-    function loadAnswers(str){
-        ajax.onreadystatechange = function() {
-            if (ajax.readyState == 4 && ajax.status == 200) {
-                $result = parseInt(ajax.response);
-                if ($result <= 9) {
-                    $result = 0 + '' + $result;
-                }
-                //reset
-                $('#painel-sort-number-enter').html('00');
-                loadQueuePanel();
-                //$('#painel-sort-number-exit').text(''&#128073;&#127998;'');
-                $('#painel-sort-number-ico').html('&#128073;&#127998;');
-                $('#painel-sort-number-exit').text($id);
-                return painelComand('/painel/store?df=8,6,7');
-            }
-        }
-        ajax.open("GET", $url, true);
-        ajax.send();
-    }
-
+   
     //function 004 Carregar o texto da pergunta
     document.getElementById('modal-edit-fila-loadPerguntaText').addEventListener('click', function() {
         let $a = $('#recipient-name').val();
@@ -502,6 +480,21 @@ $setHidden = 'hidden';
         $('#status-painel-modal').text('Cronômetro reiniciado');
         return painelComand('/painel/store?df=3');
     });
+    
+    document.getElementById('modal-resposta-yes').addEventListener('click', function() {
+        let $text = ($('#modal-resposta-text').text()).split(':');                
+        var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                return true;
+            }
+            return false;
+        }
+        ajax.open('GET','/resposta/show?id='+$text[1], true);
+        ajax.send();
+        return;
+    });
+
     //Ação executadas no click input select de operadores
     function loadQuestionerValueForSelect(src) {
         let $array = src.split('&');
@@ -575,10 +568,12 @@ $setHidden = 'hidden';
         ajax.send();
     }
 
+    
     /**Carrega o painel da fila */
     function loadQueuePanel() {
         var ajax = new XMLHttpRequest();
         $text = '';
+        $textDois = '';
         $paramRoutes = "/fila/index";
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4 && ajax.status == 200) {
@@ -588,11 +583,16 @@ $setHidden = 'hidden';
                         $text += "<button type='button' class='btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-edit-fila' \
                         data-whatever='" + $result[element].fkpergunta + "'\
                         >0" + $result[element].fkpergunta + "</button>";
+                        $textDois += "<button type='button' class='btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-confirm-respsta' \
+                        data-whatever='" + $result[element].fkpergunta + "'\
+                        >0" + $result[element].fkpergunta + "</button>";
                     } else {
                         $text += "<button type='button' class='btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-edit-fila' data-whatever='" + $result[element].fkpergunta + "'>" + $result[element].fkpergunta + "</button>";
+                        $textDois += "<button type='button' class='btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-confirm-respsta' data-whatever='" + $result[element].fkpergunta + "'>" + $result[element].fkpergunta + "</button>";
                     }
                 }
                 $('#painel-fila').html($text);
+                $('#painel-resposta').html($textDois);
                 $text = '';
                 return;
             }

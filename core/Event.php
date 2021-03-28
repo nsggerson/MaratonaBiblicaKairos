@@ -91,6 +91,7 @@ class Event
     }
 
     public static function setQuestion($param){
+       
         $name_arquivo = "../storage/repository/json/question.json";
         if (!file_exists($name_arquivo)) {            
             $text  = json_encode($param[0], JSON_PRETTY_PRINT);

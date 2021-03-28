@@ -57,11 +57,11 @@ class Fila extends BaseModel
             ON (A.fkquestion = B.fkquestion)
         WHERE B.fkquestion IS NULL";
     }
-
+    /*
     private function importModel($param){
         $model = new Pergunta();
         return $model->positiveBalance($param);
-    }
+    }*/
 
     public function question($param){
         return $this->proceduremodel("SELECT A.id AS idQuestion

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use Core\Authenticate;
 use Core\BaseController;
 use Core\Container;
+use Core\Event;
 use Dotenv\Regex\Result;
 
 class RespostaController extends BaseController
@@ -22,6 +23,13 @@ class RespostaController extends BaseController
     }
 
     public function show($request){
-        var_dump($this->global->proceduremodel("SELECT * FROM tbl_002_answer"));
+        try {
+            //code...            
+            Event::setQuestion($this->global->proceduremodel($this->global->getTheAnswer($request->get->id)));
+            Event::event('1,3,6');
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        
     }
 }

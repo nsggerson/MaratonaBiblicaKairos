@@ -25,11 +25,10 @@ class PerguntaController extends BaseController
         return print_r(file_get_contents("../storage/repository/json/question.json"));
     }
 
+    # Função trás a pergunta na modal
     public function show($request)
     {          
-        //print_r(json_encode($this->global->proceduremodel($this->global->positiveBalance($request->get->id)), JSON_PRETTY_PRINT));
-        //$result = $this->global->proceduremodel($this->global->positiveBalance($request->get->id));
-        //return print_r(Event::question($result));       
+        return print_r(json_encode($this->global->proceduremodel($this->global->positiveBalance($request->get->id)),JSON_PRETTY_PRINT));       
     }
     
     /*
