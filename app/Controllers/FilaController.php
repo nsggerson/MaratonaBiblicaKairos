@@ -42,15 +42,22 @@ class FilaController extends BaseController
         $pergs  = $this->global->proceduremodel($this->global->positiveBalance($request->get->id));
         if ($request->get->qtd == 1) {
             foreach ($pergs as $pergunta) {
+
+                // Verificando se a pergunda esta dentro do tbl_008_score
                 if (empty($this->global->proceduremodel("SELECT * FROM tbl_008_score WHERE fkquestion =" . $pergunta->idQuestion))) {
                     # code...
-                    $table = $this->global->proceduremodel($this->global->getValueNull());
-                    for ($i = 0; $i < count($table); $i++) {
-                        $element = $table[$i];
-                        if ($element->fkgroups == $request->get->id) {
-                            print_r($element->fkquestion);
-                            return;
+                    // Verificando se a pergunta esta dentro de tbl_015_canceledQuestions
+                    if (empty($this->global->proceduremodel("SELECT * FROM tbl_015_canceledQuestions WHERE id=" . $pergunta->idQuestion))) {
+                        $table = $this->global->proceduremodel($this->global->getValueNull());
+                        for ($i = 0; $i < count($table); $i++) {
+                            $element = $table[$i];
+                            if ($element->fkgroups == $request->get->id) {
+                                print_r($element->fkquestion);
+                                return;
+                            }
                         }
+                    }else{
+                        print_r(0);
                     }
                 }
             }
@@ -85,7 +92,7 @@ class FilaController extends BaseController
                 ];
                 //$this->create7_file_json(['table'=>'question','idQuestion'=>$request->get->id]);
                 Event::setShowGroups($data);
-                return;
+                return print_r('true');
             }
         } catch (\Exception $e) {
             return $e;
@@ -94,13 +101,24 @@ class FilaController extends BaseController
 
     public function delete($request)
     {
+        // Retirando a pergunta excluida pelo do grupo
+        $a = $this->global->proceduremodel("SELECT id FROM tbl_008_score WHERE fkquestion=".$request->get->id);
+        // Retirando a pergunta excluida dos pontos anulados  
+        $b = $this->global->proceduremodel("SELECT id FROM tbl_015_canceledQuestions WHERE id=".$request->get->id);
         foreach ($this->global->proceduremodel("SELECT id FROM tbl_004_queue WHERE fkquestion=" . $request->get->id) as $value) {
             try {
                 $this->global->delete($value->id);
+                if(!empty($a)){
+                    $this->global->deleteOfNameTable('tbl_008_score', $a[0]->id);
+                }                
+                if (!empty($b)) {                   
+                    $this->global->deleteOfNameTable('tbl_015_canceledQuestions', $b[0]->id);
+                }   
+                
             } catch (\Exception $e) {
                 return $e;
             }
-        }
+        }            
         return;
     }
 }

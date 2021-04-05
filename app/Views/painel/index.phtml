@@ -82,7 +82,7 @@
     </div>
 
     <div class="container" id="container-cronometro">
-    <div class='row '>
+        <div class='row '>
             <div class='col-lg-4 mx-auto'>
                 <div class='evolucao text-center' style='color: seashell;' id='barra-evolucao-percent'>00% </div>
                 <div class='progress'>
@@ -102,6 +102,7 @@
 </html>
 <script>
     var $limit = false;
+
     function main() {
         setTimeout('main()', 998);
         var ajax = new XMLHttpRequest();
@@ -118,9 +119,9 @@
                     if (element == 'load-groups') {
                         loadgrops();
                     } else if (element == 'start-scoreboard' || element == 'stop-scoreboard' || element == 'load-scoreboard') {
-                                           
-                        $exp = element.split('-');                        
-                        $d = load50($exp[0]);                        
+
+                        $exp = element.split('-');
+                        $d = load50($exp[0]);
                         if ($d == 'end') {
                             setParam('/painel/store?df=4')
                         }
@@ -152,7 +153,7 @@
     }
 
     function load50(src) {
-       
+
         let $array = [];
         let $c;
         let $html = '';

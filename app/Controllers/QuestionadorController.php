@@ -12,7 +12,7 @@ class QuestionadorController extends BaseController
     use Authenticate;
 
     private $global;
-   
+
 
     public function __construct()
     {
@@ -30,7 +30,7 @@ class QuestionadorController extends BaseController
 
     public function show($request)
     {
-     
+
         $data = [
             'idQuestion' => null,
             'idGroups' => null,
@@ -41,13 +41,16 @@ class QuestionadorController extends BaseController
         foreach ($this->global->proceduremodel($this->global->positiveBalance($request->get->id)) as $value) {
             # Verifica na tabela  tbl_008_score se existe valor do id fkquestion
             if (empty($this->global->proceduremodel("SELECT id FROM tbl_008_score WHERE fkquestion = $value->idQuestion"))) {
-                $qtd += 1;
-                $data = [
-                    'idQuestion' => $value->idQuestion,
-                    'idGroups' => $value->idGroups,
-                    'name' => $value->name,
-                    'qtd' => $qtd
-                ];
+                // Verificando se a pergunta esta dentro de tbl_015_canceledQuestions
+                if (empty($this->global->proceduremodel("SELECT id FROM tbl_015_canceledQuestions WHERE id = $value->idQuestion"))) {
+                    $qtd += 1;
+                    $data = [
+                        'idQuestion' => $value->idQuestion,
+                        'idGroups' => $value->idGroups,
+                        'name' => $value->name,
+                        'qtd' => $qtd
+                    ];
+                }
             }
         }
         print_r(json_encode([$data], JSON_PRETTY_PRINT));

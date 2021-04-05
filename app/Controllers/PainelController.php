@@ -69,6 +69,7 @@ class PainelController extends BaseController
     
     public function store($request){
         //$exp = explode(',',$request->get->df); 
+        //$file = file_get_contents("../storage/repository/json/event.json");
         Event::event($request->get->df);
         return true;        
     }

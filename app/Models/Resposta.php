@@ -15,7 +15,7 @@ class Resposta extends BaseModel
         return ("SELECT 
                 A.id
                 ,C.text
-                ,B.type
+                ,C.title AS type 
                 ,B.value
         FROM tbl_002_question AS A
         INNER JOIN tbl_001_KindOfQuestion AS B, tbl_014_answer AS C

@@ -199,7 +199,7 @@ $setHidden = 'hidden';
         </div>
         <!-- Tabela com o nome dos grupos-->
         <div class="col-md-2">
-            <div class="card text-white bg-primary mb-3" style="max-width: 19rem;">                
+            <div class="card text-white bg-primary mb-3" style="max-width: 19rem;">
                 <div class="card-header">Resposta</div>
                 <div class="card-body mb-1" id="painel-resposta">
                     loading...
@@ -216,10 +216,29 @@ $setHidden = 'hidden';
 
 
 <script>
-
     //Carrega a pergunta do painel para a modal
-    document.getElementById('modal-edit-fila-backPainel').addEventListener('click', function(){
-        alert('Fui Clicado')
+    document.getElementById('modal-edit-fila-backPainel').addEventListener('click', function() {
+        let $id = $('#recipient-name').val();
+
+        var ajax = new XMLHttpRequest();
+        let $url = "/fila/store?id=" + parseInt($id) + '&idGroups=' + $('#grupo-input-group-id').val() + '&nmGroups=' + $('#backgo-input-group-name').val() + '&idPergs=' + $('#operador-input-pergunta-id').val();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                $result = parseInt(ajax.response);
+                if ($result <= 9) {
+                    $result = 0 + '' + $result;
+                }
+                //reset
+                /*
+                $('#painel-sort-number-enter').html('00');                
+                //$('#painel-sort-number-exit').text(''&#128073;&#127998;'');
+                $('#painel-sort-number-ico').html('&#128073;&#127998;');
+                $('#painel-sort-number-exit').text($id);*/
+                return painelComand('/painel/store?df=9,6,7');
+            }
+        }
+        ajax.open("GET", $url, true);
+        ajax.send();
     });
     //Sorteia o valor da questão 
     document.getElementById('fila-gerar-numero-questao').addEventListener('click', function() {
@@ -277,7 +296,7 @@ $setHidden = 'hidden';
         ajax.send();
     });
 
-   
+
     //function 004 Carregar o texto da pergunta
     document.getElementById('modal-edit-fila-loadPerguntaText').addEventListener('click', function() {
         let $a = $('#recipient-name').val();
@@ -301,6 +320,8 @@ $setHidden = 'hidden';
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4 && ajax.status == 200) {
                 loadQueuePanel();
+                loadStatusGroups();
+                loadQuestioner()
                 return;
             }
         }
@@ -365,7 +386,7 @@ $setHidden = 'hidden';
         $('#mensagem-error-ponto').text("");
         $('#operador-input-pergunta-id').val(0);
         return painelComand('/painel/store?df=1,3');
-        return;
+
     });
 
     //Limpa o inputs modal
@@ -480,9 +501,11 @@ $setHidden = 'hidden';
         $('#status-painel-modal').text('Cronômetro reiniciado');
         return painelComand('/painel/store?df=3');
     });
-    
+
+
+    //Altoriza o carregamento da resposta
     document.getElementById('modal-resposta-yes').addEventListener('click', function() {
-        let $text = ($('#modal-resposta-text').text()).split(':');                
+        let $text = ($('#modal-resposta-text').text()).split(':');
         var ajax = new XMLHttpRequest();
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4 && ajax.status == 200) {
@@ -490,9 +513,45 @@ $setHidden = 'hidden';
             }
             return false;
         }
-        ajax.open('GET','/resposta/show?id='+$text[1], true);
+        ajax.open('GET', '/resposta/show?id=' + $text[1], true);
         ajax.send();
         return;
+    });
+
+    // Anulando a questão no painel
+    document.getElementById('modal-edit-fila-nullQuestion').addEventListener('click', function(src) {
+
+        let $a = '';
+        let $id = parseInt($('#recipient-name').val());
+        let $b = $('#modal-edit-fila-nullQuestion').text();
+        let $url = '/anular/' + $id + '/store';
+        if ($b != 'Override') {
+            $url = '/anular/' + $id + '/delete';
+            $a = confirm("Deseja restaurar a questão?");
+        } else {
+            $a = confirm("Deseja Anular esta questão?");
+        }
+        if ($a == true) {
+            var ajax = new XMLHttpRequest();
+            ajax.onreadystatechange = function() {
+                if (ajax.readyState == 4 && ajax.status == 200) {
+                    loadStatusGroups();
+                    loadQuestioner();
+                    canceledQuestions();
+                    painelComand('/painel/store?df=1,3');
+                    
+                    return true;
+
+                }
+                return false;
+            }
+            ajax.open('GET', $url, true);
+            ajax.send();
+            return;
+        } else {
+
+        }
+
     });
 
     //Ação executadas no click input select de operadores
@@ -568,7 +627,7 @@ $setHidden = 'hidden';
         ajax.send();
     }
 
-    
+
     /**Carrega o painel da fila */
     function loadQueuePanel() {
         var ajax = new XMLHttpRequest();
@@ -578,22 +637,26 @@ $setHidden = 'hidden';
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4 && ajax.status == 200) {
                 let $result = JSON.parse(ajax.response);
+                //console.log(ajax.response)
                 for (let element in $result) {
-                    if (parseInt($result[element].fkpergunta) <= 9) {
+                    let $a = $result[element].fkpergunta;
+                    if (parseInt($a) <= 9) {
                         $text += "<button type='button' class='btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-edit-fila' \
-                        data-whatever='" + $result[element].fkpergunta + "'\
-                        >0" + $result[element].fkpergunta + "</button>";
+                        data-whatever='" + $a + "' id='color-bt-" + $a + "'\
+                        >0" + $a + "</button>";
+                        // Button para resposta
                         $textDois += "<button type='button' class='btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-confirm-respsta' \
-                        data-whatever='" + $result[element].fkpergunta + "'\
-                        >0" + $result[element].fkpergunta + "</button>";
+                        data-whatever='" + $a + "' id='color-bt-" + $a + "'\
+                        >0" + $a + "</button>";
                     } else {
-                        $text += "<button type='button' class='btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-edit-fila' data-whatever='" + $result[element].fkpergunta + "'>" + $result[element].fkpergunta + "</button>";
-                        $textDois += "<button type='button' class='btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-confirm-respsta' data-whatever='" + $result[element].fkpergunta + "'>" + $result[element].fkpergunta + "</button>";
+                        $text += "<button type='button' class='btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-edit-fila' data-whatever='" + $a + "' id='color-bt-" + $a + "'>" + $a + "</button>";
+                        $textDois += "<button type='button'class='color-bt-" + $a + " btn ml-1 mb-1 btn-dark' data-toggle='modal' data-target='#modal-confirm-respsta' data-whatever='" + $a + "' id='color-bt-" + $a + "'>" + $a + "</button>";
                     }
                 }
                 $('#painel-fila').html($text);
                 $('#painel-resposta').html($textDois);
                 $text = '';
+                canceledQuestions();
                 return;
             }
         }
@@ -673,9 +736,34 @@ $setHidden = 'hidden';
         ajax.send();
     }
 
+    // Pega as perguntas canceladas
+    function canceledQuestions() {
+        let ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                $result = JSON.parse(ajax.response);
+                //console.log($result);
+                for (let index = 0; index < $result.length; index++) {
+                    const element = $result[index];
+                    //console.log(element.id)
+                    $a = document.getElementById('color-bt-' + element.id);
+                    $a.style = 'background-color: #8B0000';
+
+                }
+
+                return;
+            }
+        }
+        ajax.open('GET', '/anular', true);
+        ajax.send();
+    }
+
+
+
     window.onload = function() {
         loadQuestioner();
         loadQueuePanel();
         loadStatusGroups();
+        canceledQuestions()
     }
 </script>

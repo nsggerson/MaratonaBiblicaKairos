@@ -19,6 +19,9 @@ class Event
          * Posição 06 start-question
          * Posição 07 start-operando
          * Posição 08 load-scoreboard
+         * Posição 09 back-question
+         * Posição 10 start-answer
+         * Posição 11 return-false
          */
         $name_arquivo = "../storage/repository/json/event.json";
         $array = [
@@ -31,6 +34,9 @@ class Event
             ,'start-question'
             ,'start-operando'
             ,'load-scoreboard'
+            ,'back-question'
+            ,'start-answer'
+            ,'return-false'
         ];
         $text = '';
         $a = '';

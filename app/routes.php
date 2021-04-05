@@ -49,6 +49,11 @@ $route[] = ['/addPontos/store','AddPunctuationController@store'];
 
 $route[] = ['/resposta/show','RespostaController@show'];
 
+$route[] = ['/anular','AnularquestController@index','auth'];
+$route[] = ['/anular/{id}/store','AnularquestController@store','auth'];
+$route[] = ['/anular/{id}/show','AnularquestController@show','auth'];
+$route[] = ['/anular/{id}/delete','AnularquestController@delete','auth'];
+
 
 
 

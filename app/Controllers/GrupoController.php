@@ -48,11 +48,16 @@ class GrupoController extends BaseController
                     $pontos = 0;
                     $pergs = '';
                     foreach ($score as $a) {
-                        $pontos += $a->ponto;
-                        if ($pergs == '') {
-                            $pergs = $a->id;
-                        } else {
-                            $pergs = $pergs . ',' . $a->id;
+                        //print_r($a->id);
+                        //echo "<br>";
+                        if (empty($this->global->proceduremodel("SELECT id FROM tbl_015_canceledQuestions WHERE id=".$a->id))) 
+                        {                            
+                            $pontos += $a->ponto;
+                            if ($pergs == '') {
+                                $pergs = $a->id;
+                            } else {
+                                $pergs = $pergs . ',' . $a->id;
+                            }
                         }
                     }
                     # Representa a perca de ponto dos grupos
@@ -82,7 +87,6 @@ class GrupoController extends BaseController
 
             print_r($this->setGroups(json_encode($data, JSON_PRETTY_PRINT)));
             return;
-            
         }
         $data[] = [
             'id' => null,
@@ -99,7 +103,7 @@ class GrupoController extends BaseController
     {
         $groups_tbl = $this->global->proceduremodel($this->global->loadGroups());
         $quant = count($groups_tbl);
-        
+
         if (!empty($groups_tbl)) {
             for ($i = 0; $i < count($groups_tbl); $i++) {
                 $element = $groups_tbl[$i];
@@ -129,18 +133,17 @@ class GrupoController extends BaseController
                             $i++;
                             $r = $groups_tbl[$i];
                             $data = [
-                                'idGroups'=> $r->idGroups,
-                                'nmGroups'=> $r->nmGroups
-                            ];                            
-                            return print_r(Event::setShowGroups($data));                            
-                            
+                                'idGroups' => $r->idGroups,
+                                'nmGroups' => $r->nmGroups
+                            ];
+                            return print_r(Event::setShowGroups($data));
                         }
                         $r = $groups_tbl[$i];
-                            $data = [
-                                'idGroups'=> $r->idGroups,
-                                'nmGroups'=> $r->nmGroups
-                            ];                            
-                            return print_r(Event::setShowGroups($data));   
+                        $data = [
+                            'idGroups' => $r->idGroups,
+                            'nmGroups' => $r->nmGroups
+                        ];
+                        return print_r(Event::setShowGroups($data));
                     }
                 }
             }

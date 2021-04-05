@@ -29,9 +29,9 @@
 
         return;
     });
-    
+
     $text = 'Modal para varificar id: ';
-    
+
     //Busca as resposta
     $('#modal-confirm-respsta').on('show.bs.modal', function(event) {
         // Ganbiarra para lipar o text
@@ -46,6 +46,7 @@
         modal.find('.modal-body input').val(recipient)
         $('#recipient-type').val('undefined');
         $('#recipient-score').val('undefined');
+
     });
 
     $('#modal-edit-fila').on('show.bs.modal', function(event) {
@@ -61,6 +62,29 @@
         modal.find('.modal-body input').val(recipient)
         $('#recipient-type').val('undefined');
         $('#recipient-score').val('undefined');
+
+        let ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                //let $result = JSON.parse(ajax.response);
+                console.log(ajax.response)
+                if (ajax.response) {                    
+                    document.querySelector('#modal-edit-fila-nullQuestion').innerText = 'Activate';
+                    jQuery('#modal-edit-fila-nullQuestion').attr('class','btn btn-dark');
+                    jQuery('#modal-edit-fila-backPainel').attr('class','btn btn-light');                  
+                    jQuery('#modal-edit-fila-backPainel').attr('disabled',true);                    
+                    return;
+                }
+                document.querySelector('#modal-edit-fila-nullQuestion').innerText = 'Override';
+                jQuery('#modal-edit-fila-backPainel').attr('class','btn btn-success');
+                jQuery('#modal-edit-fila-backPainel').attr('disabled',false); 
+                jQuery('#modal-edit-fila-nullQuestion').attr('class','btn btn-warning');
+                
+                return;
+            }
+        }
+        ajax.open("GET", '/anular/' + recipient + '/show', true);
+        ajax.send();
 
     })
 
@@ -113,7 +137,7 @@
                             $('#status-painel-modal').text('Tempo limite finalizado.');
                             return;
                         default:
-                        $('#status-painel-modal').text('Painel foi iniciado.');
+                            $('#status-painel-modal').text('Painel foi iniciado.');
                             return;
                     }
 
